@@ -4,6 +4,7 @@ description: LVGL Fonts for project xiaozhi-esp32
 files:
   exclude:
   - .git
+  - fonts
   - dist
   - build
   - __pycache__
