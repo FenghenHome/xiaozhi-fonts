@@ -24,6 +24,13 @@ def main():
         
         print(f"成功生成 font_awesome_{size}_{bpp}.c")
     
+    # 生成 font_awesome.h
+    cmd = f"python3 font_awesome.py generate"
+    ret = os.system(cmd)
+    if ret != 0:
+        print(f"生成 font_awesome.h 失败，返回码：{ret}")
+        return ret
+    
     return 0
 
 if __name__ == "__main__":

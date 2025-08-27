@@ -39,20 +39,22 @@ emoji_mapping = {
 
 # download emoji from https://raw.githubusercontent.com/twitter/twemoji/refs/heads/master/assets/svg/1f644.svg
 # to folder ./build
-def get_emoji_png(emoji_utf8, size):
-    if not os.path.exists("./build"):
-        os.makedirs("./build")
+def get_emoji_png(name, emoji_utf8, size):
+    if not os.path.exists("./build/emojis"):
+        os.makedirs("./build/emojis")
     
     # 检查SVG文件是否存在
-    svg_path = f"./build/emoji_{emoji_utf8}.svg"
+    svg_path = f"./build/emojis/{name}.svg"
     if not os.path.exists(svg_path):
         url = f"https://raw.githubusercontent.com/twitter/twemoji/refs/heads/master/assets/svg/{emoji_utf8}.svg"
         response = requests.get(url)
         with open(svg_path, "wb") as f:
             f.write(response.content)
     
+    if not os.path.exists(f"./build/emojis_{size}"):
+        os.makedirs(f"./build/emojis_{size}")
     # 检查指定大小的PNG文件是否存在
-    png_path = f"./build/emoji_{emoji_utf8}_{size}.png"
+    png_path = f"./build/emojis_{size}/{name}.png"
     if not os.path.exists(png_path):
         # 使用cairosvg转换SVG到PNG
         cairosvg.svg2png(
@@ -96,17 +98,13 @@ def generate_lvgl_image(png_path, cf_str, compress_str):
 def main():
     args = parse_arguments()
     
-    # 创建输出目录
-    if not os.path.exists("./build/emoji"):
-        os.makedirs("./build/emoji")
-    
     # 处理每个表情符号
     for name, code in emoji_mapping.items():
         # 将十六进制代码转换为字符串格式
         emoji_utf8 = format(code, 'x')
         
         # 获取或下载 PNG 文件
-        png_path = get_emoji_png(emoji_utf8, args.size)
+        png_path = get_emoji_png(name, emoji_utf8, args.size)
         
         if args.type == 'lvgl':
             # 生成 LVGL 图像文件
