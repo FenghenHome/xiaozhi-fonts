@@ -38,23 +38,23 @@ emoji_mapping = {
 
 
 # download emoji from https://raw.githubusercontent.com/twitter/twemoji/refs/heads/master/assets/svg/1f644.svg
-# to folder ./build
+# to folder ./build/svg
 def get_emoji_png(name, emoji_utf8, size):
-    if not os.path.exists("./build/emojis"):
-        os.makedirs("./build/emojis")
+    if not os.path.exists("./build/svg"):
+        os.makedirs("./build/svg")
     
     # 检查SVG文件是否存在
-    svg_path = f"./build/emojis/{name}.svg"
+    svg_path = f"./build/svg/{name}.svg"
     if not os.path.exists(svg_path):
         url = f"https://raw.githubusercontent.com/twitter/twemoji/refs/heads/master/assets/svg/{emoji_utf8}.svg"
         response = requests.get(url)
         with open(svg_path, "wb") as f:
             f.write(response.content)
     
-    if not os.path.exists(f"./build/emojis_{size}"):
-        os.makedirs(f"./build/emojis_{size}")
+    if not os.path.exists(f"./png/twemoji_{size}"):
+        os.makedirs(f"./png/twemoji_{size}")
     # 检查指定大小的PNG文件是否存在
-    png_path = f"./build/emojis_{size}/{name}.png"
+    png_path = f"./png/twemoji_{size}/{name}.png"
     if not os.path.exists(png_path):
         # 使用cairosvg转换SVG到PNG
         cairosvg.svg2png(
